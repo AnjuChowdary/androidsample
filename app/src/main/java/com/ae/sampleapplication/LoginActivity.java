@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -41,30 +42,39 @@ public class LoginActivity extends AppCompatActivity {
         //Validate User Inputs -> Username and Password
         if(username.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
             //Alert -> USername and Password cannot be empty
+            //Context -> Screen Reference this -> .java -> .class
+            //Instance of any class, object this = new LoginActivity()
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Login Error");
             alert.setMessage("Username and Password should not be empty");
+
             alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //No implementation
                 }
             });
-            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
 
-                }
+            //Lambda
+            alert.setNegativeButton("Cancel", (dialog, which) -> {
+
             });
+
             alert.show();
         } else {
             //Login
-            //Go to home Screen ->
+            //Go to home Screen -> Explicit Intent
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("username", username.getText().toString()); //Passing values to another screen
+            startActivity(intent);
+            finish();
+
             //Drawable
             //Empty input fields
             username.setText("");
             password.setText("");
-            Toast.makeText(this, "Login is Successful", Toast.LENGTH_LONG).show();
+
+//            Toast.makeText(this, "Login is Successful", Toast.LENGTH_LONG).show();
         }
     }
 }
