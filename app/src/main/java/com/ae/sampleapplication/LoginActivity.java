@@ -3,8 +3,10 @@ package com.ae.sampleapplication;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +19,14 @@ public class LoginActivity extends AppCompatActivity {
     EditText username, password;
     TextView forgotPassword, createAccount;
     Button login;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        sharedPreferences = this.getSharedPreferences("MYDATA", Context.MODE_PRIVATE);
 
         username = findViewById(R.id.username_editText);
         password = findViewById(R.id.password_editText);
@@ -30,12 +35,19 @@ public class LoginActivity extends AppCompatActivity {
         login = findViewById(R.id.login_button);
 
         //Programatically handling click of Button
-//        login.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        createAccount.setOnClickListener(v -> {
+            Intent registerIntent = new Intent(this, RegisterActivity.class);
+            startActivity(registerIntent);
+        });
+
+        //Check if user already exists then go to Home Screen
+        if (sharedPreferences.contains("username")) {
+            //User already exists
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("username", sharedPreferences.getString("username","")); //Passing values to another screen
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void UserLogin(View view) {
@@ -55,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-            //Lambda
+            //Lambda expression - Functional Interface -> Single unimplemented method
             alert.setNegativeButton("Cancel", (dialog, which) -> {
 
             });
@@ -64,17 +76,21 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             //Login
             //Go to home Screen -> Explicit Intent
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("username", username.getText().toString()); //Passing values to another screen
-            startActivity(intent);
-            finish();
+            String savedUsername = sharedPreferences.getString("username","");
+            String savePassword = sharedPreferences.getString("password","");
 
-            //Drawable
-            //Empty input fields
-            username.setText("");
-            password.setText("");
+            if (username.getText().toString().equals(savedUsername) && password.getText().toString().equals(savePassword)) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.putExtra("username", username.getText().toString()); //Passing values to another screen
+                startActivity(intent);
+                finish();
 
-//            Toast.makeText(this, "Login is Successful", Toast.LENGTH_LONG).show();
+                //Empty input fields
+                username.setText("");
+                password.setText("");
+            } else {
+                Toast.makeText(this, "Invalid Credentilas", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
