@@ -2,6 +2,7 @@ package com.ae.sampleapplication;
 
 import androidx.annotation.MainThread;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,7 +15,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     EditText username, password, confirmPassword;
     SharedPreferences sharedPreferences;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
