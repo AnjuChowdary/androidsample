@@ -15,13 +15,14 @@ import com.ae.sampleapplication.R;
 import com.ae.sampleapplication.model.MyNotes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyNotesAdapter extends RecyclerView.Adapter<MyNotesAdapter.MyNotesDataHolder> {
 
     Context context; //Reference of HomeActivity
-    ArrayList<MyNotes> myNotes;
+    List<MyNotes> myNotes;
 
-    public MyNotesAdapter(Context context, ArrayList<MyNotes> myNotes) {
+    public MyNotesAdapter(Context context, List<MyNotes> myNotes) {
         this.context = context;
         this.myNotes = myNotes;
     }
@@ -46,7 +47,7 @@ public class MyNotesAdapter extends RecyclerView.Adapter<MyNotesAdapter.MyNotesD
             }
         });
         holder.date.setText(myNotes.get(position).getDate());
-        holder.details.setText(myNotes.get(position).getDetails());
+        holder.details.setText(myNotes.get(position).getDescription());
         holder.title.setText(myNotes.get(position).getTitle());
     }
 
