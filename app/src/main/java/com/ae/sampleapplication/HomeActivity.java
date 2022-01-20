@@ -5,11 +5,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.ae.sampleapplication.adapter.MyNotesAdapter;
 import com.ae.sampleapplication.model.MyNotes;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     TextView name;
     RecyclerView notesRecyclerView;
     ArrayList<MyNotes> myNotesList;
+    FloatingActionButton addFabButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
         name = findViewById(R.id.user_textView);
         notesRecyclerView = findViewById(R.id.notes_recyclerView);
+        addFabButton = findViewById(R.id.add_note_fabButton);
 
         //Check if extras exists
         if(getIntent().hasExtra("username")) {
@@ -48,6 +53,21 @@ public class HomeActivity extends AppCompatActivity {
 
         notesRecyclerView.setLayoutManager(manager);
         notesRecyclerView.setAdapter(new MyNotesAdapter(this, myNotesList));
+
+
+        addFabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent
+                Intent intent = new Intent(HomeActivity.this, AddNotesActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void prepareDummyDate() {

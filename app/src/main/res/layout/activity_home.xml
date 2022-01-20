@@ -24,4 +24,13 @@
         app:layout_constraintTop_toBottomOf="@+id/user_textView"
         android:layout_margin="20dp"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/add_note_fabButton"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="20dp"
+        android:src="@drawable/username" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

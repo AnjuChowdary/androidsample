@@ -1,8 +1,21 @@
 package com.ae.sampleapplication.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class MyNotes {
+    @PrimaryKey(autoGenerate = true)
+    int id;
+
+    @ColumnInfo(name = "date")
     String date;
+
+    @ColumnInfo(name = "title")
     String title;
+
+    @ColumnInfo(name = "details")
     String details;
 
     public MyNotes() {
@@ -13,6 +26,14 @@ public class MyNotes {
         this.date = date;
         this.title = title;
         this.details = details;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public MyNotes(String date){
