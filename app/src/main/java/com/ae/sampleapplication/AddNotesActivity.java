@@ -16,6 +16,7 @@ import java.util.Date;
 
 public class AddNotesActivity extends AppCompatActivity {
     TextInputEditText title, notes;
+    Boolean isUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,13 @@ public class AddNotesActivity extends AppCompatActivity {
 
         title = findViewById(R.id.title_editText);
         notes = findViewById(R.id.notes_editText);
+
+        if (getIntent().hasExtra("tittle") && getIntent().hasExtra("details")) {
+            //Edit the content
+            title.setText(getIntent().getStringExtra("tittle"));
+            notes.setText(getIntent().getStringExtra("details"));
+            isUpdate = true;
+        }
     }
 
     public void SaveNotes(View view) {
@@ -34,20 +42,23 @@ public class AddNotesActivity extends AppCompatActivity {
         if (title.getText().toString().isEmpty() || notes.getText().toString().isEmpty()) {
             Toast.makeText(this, "Title and Notes are required", Toast.LENGTH_SHORT).show();
         } else {
-            //Save into DB
-
             MyNotes myNotes = new MyNotes();
             myNotes.setTitle(title.getText().toString());
             myNotes.setDetails(notes.getText().toString());
-            myNotes.setDate(new Date().toString());
+
+            if (isUpdate)
+                myNotes.setDate(getIntent().getStringExtra("date"));
+            else
+                myNotes.setDate(new Date().toString());
 
             MyTask task = new MyTask();
             task.execute(myNotes);
+
         }
     }
 
 
-    //AsyncTask
+    //AsyncTask - Non UI thread
 
     class MyTask extends AsyncTask<MyNotes, Void, Void> {
         AppDatabase db;
@@ -60,7 +71,11 @@ public class AddNotesActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(MyNotes... myNotes) { //Not UI thread
-            db.myNotesDao().insert(myNotes[0]);
+            if (isUpdate) {
+                db.myNotesDao().updateNotes(myNotes[0]);
+            } else {
+                db.myNotesDao().insert(myNotes[0]);
+            }
             return null;
         }
 
@@ -73,4 +88,6 @@ public class AddNotesActivity extends AppCompatActivity {
             finish();
         }
     }
+
+    //Scope - public , private, protected
 }
